@@ -8,19 +8,19 @@ library(kableExtra)
 library(dplyr)
 
 
-hDNA_microbialDNA_G230302 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/hDNA_microbialDNA_proportion/mapped_stats_hDNA_G230302.txt')
-head(hDNA_microbialDNA_G230302) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+hDNA_microbialDNA_G230317 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/hDNA_microbialDNA_proportion/mapped_stats_hDNA_G230317.txt')
+head(hDNA_microbialDNA_G230317) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
-hDNA_microbialDNA_G230302_long_df <- hDNA_microbialDNA_G230302 %>% select(-c(Total, mapped_reads, unmapped_reads)) %>% 
+hDNA_microbialDNA_G230317_long_df <- hDNA_microbialDNA_G230317 %>% select(-c(Total, mapped_reads, unmapped_reads)) %>% 
   pivot_longer(-Filename, names_to = 'Read_proportion', values_to = 'Proportion') %>% 
-  bind_cols(hDNA_microbialDNA_G230302 %>% select(-c(Total, proportion_mapped, proportion_unmapped)) %>% 
+  bind_cols(hDNA_microbialDNA_G230317 %>% select(-c(Total, proportion_mapped, proportion_unmapped)) %>% 
               pivot_longer(-Filename, names_to = 'Read', values_to = 'Counts') %>% select(-Filename))
 
-head(hDNA_microbialDNA_G230302_long_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(hDNA_microbialDNA_G230317_long_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
-hDNA_microbialDNA_G230302_df <- hDNA_microbialDNA_G230302_long_df %>% 
+hDNA_microbialDNA_G230317_df <- hDNA_microbialDNA_G230317_long_df %>% 
   mutate(Site = case_when(str_detect(Filename, '[Ss]wab|[Ww]ater') ~ 'Neg_Ctrl',
                           str_detect(Filename, 'A') ~ 'Anus',
                           str_detect(Filename, 'B|N') ~ 'Nose')) %>% 
@@ -29,7 +29,7 @@ hDNA_microbialDNA_G230302_df <- hDNA_microbialDNA_G230302_long_df %>%
                                    Counts >= 1000 & Counts <= 10000 ~ "*",
                                    Counts > 10000 ~ "**")) 
 
-head(hDNA_microbialDNA_G230302_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(hDNA_microbialDNA_G230317_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
 
@@ -70,20 +70,20 @@ human_contamination_plot2 <- function(bam_metadata_merged_df, ordered_sample_nam
 
 
 
-sample_name_elements_G230302 <- hDNA_microbialDNA_G230302_df %>% 
+sample_name_elements_G230317 <- hDNA_microbialDNA_G230317_df %>% 
   filter(!Sample %in% c('Swab', 'swab', 'Water', 'water')) %>% 
   distinct(Sample) %>% pull() %>% unique() %>% sort()
 
-sample_name_elements_G230302 <- c('Swab', 'Water') %>% append(sample_name_elements_G230302)
+sample_name_elements_G230317 <- c('Swab', 'Water') %>% append(sample_name_elements_G230317)
 
-sample_name_elements_G230302
+sample_name_elements_G230317
 
 
 
-hDNA_microbialDNA_G230302_plot <- human_contamination_plot2(hDNA_microbialDNA_G230302_df, sample_name_elements_G230302)
+hDNA_microbialDNA_G230317_plot <- human_contamination_plot2(hDNA_microbialDNA_G230317_df, sample_name_elements_G230317)
 
-hDNA_microbialDNA_G230302_plot
+hDNA_microbialDNA_G230317_plot
   
-jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230302_hDNA_microbialDNA_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
-print(hDNA_microbialDNA_G230302_plot)
+jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230317_hDNA_microbialDNA_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
+print(hDNA_microbialDNA_G230317_plot)
 dev.off()
