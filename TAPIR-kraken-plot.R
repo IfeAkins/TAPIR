@@ -10,13 +10,13 @@ library(viridis)
 
 #Read in the data (combined kraken report file) and combined kraken unclassified file
 
-kraken_G230302 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/combined_kraken_report_S_G230302.txt')
-kraken_G230302_unclassified <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/combined_kraken_report_U_G230302.txt')
+kraken_G230317 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/combined_kraken_report_S_G230317.txt')
+kraken_G230317_unclassified <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/combined_kraken_report_U_G230317.txt')
 
 # merge
-kraken_G230302_merge_df <- kraken_G230302 %>% bind_rows(kraken_G230302_unclassified)
+kraken_G230317_merge_df <- kraken_G230317 %>% bind_rows(kraken_G230317_unclassified)
 
-head(kraken_G230302_merge_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(kraken_G230317_merge_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
 #Read in data containing existing species and colours from Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/MicrobialSpeciesNameAndColour.tsv.
@@ -106,23 +106,23 @@ kraken3_parse_df <- function(kraken_combined_report){
 
 
 #Call the function in order to generate a modified kraken report file containing relevant metadata (e.g Site)
-kraken_G230302_modified_df <- kraken3_parse_df(kraken_G230302_merge_df)
+kraken_G230317_modified_df <- kraken3_parse_df(kraken_G230317_merge_df)
 
-head(kraken_G230302_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(kraken_G230317_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 #Show species contained in modified kraken report
-kraken_G230302_species <- kraken_G230302_modified_df %>% 
+kraken_G230317_species <- kraken_G230317_modified_df %>% 
   filter(!species %in% c('unclassified', 'unassigned', 'Others')) %>% distinct(species) %>% 
   pull() %>% unique() %>% sort()
 
-kraken_G230302_species %<>% c('unclassified', 'unassigned', 'Others')
+kraken_G230317_species %<>% c('unclassified', 'unassigned', 'Others')
 
-print(kraken_G230302_species)
+print(kraken_G230317_species)
 
 print(current_species_name_and_colours$species_name)
 
 #Identify species in the current df not present in the list of species
-setdiff(kraken_G230302_species, current_species_name_and_colours$species_name)
+setdiff(kraken_G230317_species, current_species_name_and_colours$species_name)
 
 #Assign colors to the new species. You can search for suitable colors online,
 #bearing in mind that color-blind-friendly colours are preferable. 
@@ -154,8 +154,8 @@ current_species_name_and_colours_df <- as.data.frame(current_species_name_and_co
 
 #Filter for only the species present in the combined kraken output
 # filter only species of interest for the plot and convert dataframe to vector
-kraken_G230302_species_name_and_colour <- current_species_name_and_colours %>% 
-  filter(species_name %in% c(kraken_G230302_species)) %>% dplyr::pull(species_colour, species_name)
+kraken_G230317_species_name_and_colour <- current_species_name_and_colours %>% 
+  filter(species_name %in% c(kraken_G230317_species)) %>% dplyr::pull(species_colour, species_name)
 
 #This function helps in plotting bar charts.
 plot_bar_kraken <- function(kraken, species_colors){
@@ -213,22 +213,22 @@ plot_bar_kraken <- function(kraken, species_colors){
 }
 
 
-kraken_G230302_modified_df <- kraken3_parse_df(kraken_G230302_merge_df)
+kraken_G230317_modified_df <- kraken3_parse_df(kraken_G230317_merge_df)
 
-head(kraken_G230302_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(kraken_G230317_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
 #Show species contained in modified kraken report
-kraken_G230302_species <- kraken_G230302_modified_df %>% 
+kraken_G230317_species <- kraken_G230317_modified_df %>% 
   filter(!species %in% c('unclassified', 'unassigned', 'Others')) %>% distinct(species) %>% 
   pull() %>% unique() %>% sort()
 
-kraken_G230302_species %<>% c('unclassified', 'unassigned', 'Others')
+kraken_G230317_species %<>% c('unclassified', 'unassigned', 'Others')
 
-print(kraken_G230302_species)
+print(kraken_G230317_species)
 
 #Identify species in the current df not present in the list of species
-setdiff(kraken_G230302_species, current_species_name_and_colours$species_name)
+setdiff(kraken_G230317_species, current_species_name_and_colours$species_name)
                       
 
 new_species_and_colours <- c("unassigned" = "#778899")
@@ -254,8 +254,8 @@ current_species_names_and_colours_update1_df <- current_species_names_and_colour
 
 
 # filter only species of interest for the plot and convert dataframe to vector
-kraken_G230302_species_name_and_colour <- current_species_names_and_colours_update1_df %>% 
-  filter(species_name %in% c(kraken_G230302_species)) %>% dplyr::pull(species_colour, species_name)
+kraken_G230317_species_name_and_colour <- current_species_names_and_colours_update1_df %>% 
+  filter(species_name %in% c(kraken_G230317_species)) %>% dplyr::pull(species_colour, species_name)
 
 
 plot_bar_kraken <- function(kraken_combined_report_final_df, species_colors){
@@ -313,14 +313,14 @@ plot_bar_kraken <- function(kraken_combined_report_final_df, species_colors){
 }
 
 
-kraken_G230302_plot <- plot_bar_kraken(kraken_G230302_modified_df, kraken_G230302_species_name_and_colour)
-kraken_G230302_plot
+kraken_G230317_plot <- plot_bar_kraken(kraken_G230317_modified_df, kraken_G230317_species_name_and_colour)
+kraken_G230317_plot
 
 
-write.table(kraken_G230302_modified_df, 'Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/G230302_combined_parsed_kraken_report.tsv', row.names = FALSE, sep = '\t')
+write.table(kraken_G230317_modified_df, 'Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_kraken_report_per_sequence_date/G230317_combined_parsed_kraken_report.tsv', row.names = FALSE, sep = '\t')
 
-jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230302_kraken_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
-print(kraken_G230302_plot)
+jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230317_kraken_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
+print(kraken_G230317_plot)
 dev.off()
 
 
