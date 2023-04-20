@@ -9,8 +9,8 @@ library(patchwork)
 
 
 
-kraken_bracken_G230317_df <- kraken_G230317_modified_df %>% mutate(type = 'KRAKEN') %>% 
-  bind_rows(bracken_G230317_modified_df %>% 
+kraken_bracken_G230414_df <- kraken_G230414_modified_df %>% mutate(type = 'KRAKEN') %>% 
+  bind_rows(bracken_G230414_modified_df %>% 
               mutate(type = 'BRACKEN',
                      percentage = percentage_total_reads,
                      cladeReads = kraken_assigned_reads,
@@ -81,11 +81,11 @@ plot_bar_kraken_bracken <- function(kraken_combined_report_final_df, species_col
 }
 
 
-kraken_bracken_G230317_plot <- plot_bar_kraken_bracken(kraken_bracken_G230317_df, kraken_G230317_species_name_and_colour)
-kraken_bracken_G230317_plot
+kraken_bracken_G230414_plot <- plot_bar_kraken_bracken(kraken_bracken_G230414_df, kraken_G230414_species_name_and_colour)
+kraken_bracken_G230414_plot
 
 
-jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230317_kraken_bracken_plot.jpeg", width = 12000, height = 7000, units = 'px', res = 600)
-print(kraken_bracken_G230317_plot)
+jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230414_kraken_bracken_plot.jpeg", width = 13000, height = 7000, units = 'px', res = 600)
+print(kraken_bracken_G230414_plot)
 dev.off()
 
