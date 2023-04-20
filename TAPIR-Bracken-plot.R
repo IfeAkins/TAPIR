@@ -6,9 +6,9 @@ library(kableExtra)
 library(viridis)
 
 
-bracken_G230317 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_bracken_per_sequence_date/combined_bracken_S_G230317.txt')
+bracken_G230414 <- readr::read_tsv('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_bracken_per_sequence_date/combined_bracken_S_G230414.txt')
 
-head(bracken_G230317) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(bracken_G230414) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
 current_species_name_and_colours <- readxl::read_xlsx('Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/colors_by_gram_230303.xlsx')
@@ -104,32 +104,32 @@ bracken_parse_df <- function(bracken_combined_report){
 
 
 
-bracken_G230317_modified_df <- bracken_parse_df(bracken_G230317)
+bracken_G230414_modified_df <- bracken_parse_df(bracken_G230414)
 
-head(bracken_G230317_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
+head(bracken_G230414_modified_df) %>% kable() %>% kable_styling() %>% scroll_box(width = "100%")
 
 
 
-bracken_G230317_species <- bracken_G230317_modified_df %>% 
+bracken_G230414_species <- bracken_G230414_modified_df %>% 
   filter(!name %in%  c('Others', 'unassigned')) %>% distinct(name) %>% 
   pull() %>% unique() %>% sort() %>% c('Others', 'unassigned')
 
-print(bracken_G230317_species)
+print(bracken_G230414_species)
 
 
-setdiff(bracken_G230317_species, current_species_name_and_colours$species_name)
+setdiff(bracken_G230414_species, current_species_name_and_colours$species_name)
 
 
 
-scales::viridis_pal()(length(unique(bracken_G230317_modified_df$name)))
+scales::viridis_pal()(length(unique(bracken_G230414_modified_df$name)))
 # I chose the first one
 
 
 
 
 # filter only species of interest for the plot and convert dataframe to vector
-bracken_G230317_species_name_and_colour <- current_species_name_and_colours %>% 
-  filter(species_name %in% c(bracken_G230317_species)) %>% dplyr::pull(species_colour, species_name)
+bracken_G230414_species_name_and_colour <- current_species_name_and_colours %>% 
+  filter(species_name %in% c(bracken_G230414_species)) %>% dplyr::pull(species_colour, species_name)
 
 
 
@@ -190,13 +190,13 @@ plot_bar_bracken <- function(bracken_combined_report_final_df, species_colors){
 }
 
 
-bracken_G230317_plot <- plot_bar_bracken(bracken_G230317_modified_df, bracken_G230317_species_name_and_colour)
-bracken_G230317_plot
+bracken_G230414_plot <- plot_bar_bracken(bracken_G230414_modified_df, bracken_G230414_species_name_and_colour)
+bracken_G230414_plot
 
 
-write.table(bracken_G230317_modified_df, 'Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_bracken_per_sequence_date/G230317_combined_parsed_bracken.tsv', row.names = FALSE, sep = '\t')
+write.table(bracken_G230414_modified_df, 'Q:/IUK-A-MIGE/PROJECTS/TAPIR/files/combined_bracken_per_sequence_date/G230414_combined_parsed_bracken.tsv', row.names = FALSE, sep = '\t')
 
-jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230317_bracken_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
-print(bracken_G230317_plot)
+jpeg("Q:/IUK-A-MIGE/PROJECTS/TAPIR/figures/G230414_bracken_plot.jpeg", width = 10000, height = 5000, units = 'px', res = 600)
+print(bracken_G230414_plot)
 dev.off()
 
